@@ -65,11 +65,11 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
               Input(component_id='site-dropdown', component_property='value'))
 def get_pie_chart(entered_site):
     if entered_site == 'ALL':
-        data=spacex_df.groupby('class')['Flight Number'].count().reset_index().rename(columns={'Flight Number':'Number of Flights'})
-        data['class']=data['class'].map({0: "Unsuccessful", 1: 'Successful'})
-        fig = px.pie(data, values='Number of Flights', 
-        names='class', 
-        title='Number of Successful and Unsuccessful  Flights')
+        data=spacex_df[spacex_df['class']==1]
+        data=data.groupby('Launch Site')['Flight Number'].count().reset_index().rename(columns={'Flight Number':'Number of Successful Flights'})
+        fig = px.pie(data, values='Number of Successful Flights', 
+        names='Launch Site', 
+        title='Number of Successful Flights for each Launch Site')
         return fig
     else:
         filtered_df = spacex_df[spacex_df['Launch Site']==entered_site]
